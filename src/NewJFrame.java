@@ -1,4 +1,14 @@
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.Timer;
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,10 +19,11 @@
  * @author Istrac
  */
 public class NewJFrame extends javax.swing.JFrame {
-
+    
     private Antenna a[];
     private final Designate designate;
     private final SWlimit swlimit;
+    private String schHash = "";
 
     /**
      * Creates new form NewJFrame
@@ -27,8 +38,6 @@ public class NewJFrame extends javax.swing.JFrame {
         String ip5 = "192.168.40.55";
         String ip6 = "192.168.40.56";
         
-        
-
         a = new Antenna[6];
         
         a[0] = new Antenna(0xA1);
@@ -77,15 +86,24 @@ public class NewJFrame extends javax.swing.JFrame {
         for (int i = 0; i < 6; i++) {
             a[i].linkDesignateForm(designate);
         }
-
+        
         InfoServer server = new InfoServer();
         for (int i = 0; i < 6; i++) {
             server.servoStat[i] = a[i].servoStatus;
         }
-
+        
         swlimit = new SWlimit();
         swlimit.linkAntennas(a[0], a[1], a[2], a[3], a[4], a[5]);
-
+        
+        Timer schTimer = new Timer(60000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkForScheduleChange();
+            }
+            
+        });
+        schTimer.setInitialDelay(0);
+        schTimer.start();
     }
 
     /**
@@ -552,7 +570,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel31Layout.setVerticalGroup(
             jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel31Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jPanel32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -818,7 +836,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel33Layout.setVerticalGroup(
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel33Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jPanel34, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1084,7 +1102,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel35Layout.setVerticalGroup(
             jPanel35Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel35Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jPanel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1350,7 +1368,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel37Layout.setVerticalGroup(
             jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel37Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jPanel38, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1614,7 +1632,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel39Layout.setVerticalGroup(
             jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel39Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jPanel40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1879,7 +1897,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel43Layout.setVerticalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel43Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jPanel44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1991,24 +2009,39 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        boolean[] states = new boolean[6];
-        for (int i = 0; i < 6; i++) {
-            if (a[i].isRunning()) {
-                states[i] = true;
-                a[i].stopAntenna();
-            } else {
-                states[i] = false;
-            }            
-        }
-        for (int i = 0; i < 6; i++) {
-            a[i].reader.readNewSchedule();
-        }
-        for (int i = 0; i < 6; i++) {
-            if(states[i]){
-                a[i].startAntenna();
-            }
-        }
+
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+    private void checkForScheduleChange() {
+        
+        try {
+            String s = new String(Files.readAllBytes(Paths.get("meogen.info"))).trim();
+            String[] split = s.split("\t");
+            String currHash = split[3];
+            if (!currHash.equalsIgnoreCase(schHash)) {
+                boolean[] states = new boolean[6];
+                for (int i = 0; i < 6; i++) {
+                    if (a[i].isRunning()) {
+                        states[i] = true;
+                        a[i].stopAntenna();
+                    } else {
+                        states[i] = false;
+                    }
+                }
+                for (int i = 0; i < 6; i++) {
+                    a[i].reader.readNewSchedule();
+                }
+                for (int i = 0; i < 6; i++) {
+                    if (states[i]) {
+                        a[i].startAntenna();
+                    }
+                }
+            }
+            schHash = currHash;
+            
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -2040,6 +2073,7 @@ public class NewJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
                 new NewJFrame().setVisible(true);
 //                Archive a=new Archive("C:\\Users\\RDA digital\\Documents\\NetBeansProjects\\ACS\\test.txt");
 //                a.write(65, 46);

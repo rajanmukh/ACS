@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
@@ -85,7 +86,7 @@ public class Reader {
             }
         });
         startTimer.setRepeats(false);
-        readNewSchedule();
+        //readNewSchedule();
 
     }
 
@@ -406,12 +407,14 @@ public class Reader {
 
     private synchronized static void copySchedularTo(String path) {
         try {
-
+            
             Files.copy(Paths.get(Reader.SCHEDULARPATH, "/meogen.sch"), Paths.get(path, "/meogen.sch"), StandardCopyOption.REPLACE_EXISTING);
             File dir = new File(Reader.SCHEDULARPATH + "/pgm");
             String[] listFiles = dir.list();;
             for (String fileName : listFiles) {
                 if (fileName.endsWith(".pgm")) {
+                    Files.copy(Paths.get(Reader.SCHEDULARPATH, "/pgm/", fileName), Paths.get(path, "/pgm/", fileName), StandardCopyOption.REPLACE_EXISTING);
+                    
                     Files.copy(Paths.get(Reader.SCHEDULARPATH, "/pgm/", fileName), Paths.get(path, "/pgm/", fileName), StandardCopyOption.REPLACE_EXISTING);
                 }
             }
